@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: megatron
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: megatron
+    spec:
+      volumes:
+      - name: sharedfs
+        emptyDir: {}
+      containers:
+      - name: unoconv
+        image: megatron:1.0.0
+        imagePullPolicy: IfNotPresent
+        command: ["/usr/bin/unoconv"]
+        args: ["--listener", "--server=127.0.0.1", "--port=2002", "-vv"]
+        volumeMounts:
+        - name: sharedfs
+          mountPath: /tmp
+      - name: worker
+        image: megatron:1.0.0
+        imagePullPolicy: IfNotPresent
+        command: ["/usr/local/bin/gunicorn"]
+        args: ["-w", "1", "-b", "0.0.0.0:5000", "--threads", "1", "app:app"]
+        volumeMounts:
+        - name: sharedfs
+          mountPath: /tmp
