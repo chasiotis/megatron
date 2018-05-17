@@ -1,6 +1,6 @@
 ## Playing around with kubernetes and uniconv
 
-Everybody know who is the [enemy](https://en.wikipedia.org/wiki/Megatron) of [optimus prime](https://en.wikipedia.org/wiki/Optimus_Prime) is! 
+Everybody know who the [enemy](https://en.wikipedia.org/wiki/Megatron) of [optimus prime](https://en.wikipedia.org/wiki/Optimus_Prime) is! 
 
 Create the docker image (directly on minikube)
 ```
