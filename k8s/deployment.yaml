@@ -18,7 +18,17 @@ spec:
         image: megatron:1.0.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/bin/unoconv"]
-        args: ["--listener", "--server=127.0.0.1", "--port=2002", "-vv"]
+        args: ["--listener", "--server=127.0.0.1", "--port=2002", "--verbose"]
+        lifecycle:
+          postStart:
+            exec:
+              command: ["rm", "-rf", "/tmp/KILL_ME"]
+        readinessProbe:
+          exec:
+            command: ["test", "!", "-f", "/tmp/KILL_ME"]
+        livenessProbe:
+          exec:
+            command: ["test", "!", "-f", "/tmp/KILL_ME"]
         resources:
           requests:
             memory: "512Mi"
