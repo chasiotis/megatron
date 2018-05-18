@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: megatron
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -19,16 +19,6 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["/usr/bin/unoconv"]
         args: ["--listener", "--server=127.0.0.1", "--port=2002", "--verbose"]
-        lifecycle:
-          postStart:
-            exec:
-              command: ["rm", "-rf", "/tmp/KILL_ME"]
-        readinessProbe:
-          exec:
-            command: ["test", "!", "-f", "/tmp/KILL_ME"]
-        livenessProbe:
-          exec:
-            command: ["test", "!", "-f", "/tmp/KILL_ME"]
         resources:
           requests:
             memory: "512Mi"
@@ -43,7 +33,7 @@ spec:
         image: megatron:1.0.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/local/bin/gunicorn"]
-        args: ["-w", "1", "-b", "0.0.0.0:5000", "--threads", "1", "app:app"]
+        args: ["-w", "1", "-b", "0.0.0.0:5000", "--threads", "5", "app:app"]
         resources:
           requests:
             memory: "64Mi"
