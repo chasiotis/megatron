@@ -15,32 +15,18 @@ spec:
         emptyDir: {}
       containers:
       - name: unoconv
-        image: megatron:1.0.0
+        image: gcr.io/workable-k8s/megatron:1.0.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/bin/unoconv"]
         args: ["--listener", "--server=127.0.0.1", "--port=2002", "--verbose"]
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1024Mi"
-            cpu: "1000m"
         volumeMounts:
         - name: sharedfs
           mountPath: /tmp
       - name: worker
-        image: megatron:1.0.0
+        image: gcr.io/workable-k8s/megatron:1.0.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/local/bin/gunicorn"]
         args: ["-w", "1", "-b", "0.0.0.0:5000", "--threads", "5", "app:app"]
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
         volumeMounts:
         - name: sharedfs
           mountPath: /tmp
